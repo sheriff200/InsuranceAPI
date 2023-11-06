@@ -96,7 +96,39 @@ namespace Insurance.Test.Controllers
         }
 
 
+        [Fact]
+        public async Task Login_Should_Return_Successful()
+        {
+            var response = new WebApiResponse()
+            {
+                StatusCode = "200",
+                ResponseCode = "00"
+            };
 
+            var req = new ValidateUserRequest()
+            {
+                Username = "mail@example.com",
+                Password = "XDR56789JKSsss%",
+                Role = "Approval"
+            };
+
+            var _req = _mockLoginRequest.GenerateLoginRequestObject();
+            _mockAccountService.Setup(x => x.ValidateUserLogin(req)).ReturnsAsync(response);
+
+            var result = await _sut.Login(req);
+
+            result.Should().BeOfType<ObjectResult>();
+
+            var objectResult = (ObjectResult)result;
+            objectResult.StatusCode.Should().Be(200);
+
+            var value = (WebApiResponse?)objectResult.Value;
+
+            value.Should().NotBeNull();
+            value.Should().BeOfType<WebApiResponse>();
+            value?.StatusCode.Should().Be("200");
+            value?.ResponseCode.Should().Be("00");
+        }
 
     }
 }
