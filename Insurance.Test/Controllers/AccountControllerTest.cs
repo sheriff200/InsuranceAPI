@@ -2,7 +2,6 @@
 using DataAccessLayer.Model.Dto.Response;
 using FluentAssertions;
 using InfrastructureLayer.IServices;
-using Insurance.Test.MockData;
 using InsuranceAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -19,7 +18,6 @@ namespace Insurance.Test.Controllers
 
         private readonly AccountController _sut;
         private readonly Mock<IAccountService> _mockAccountService;
-        private readonly MockDataClass _mockLoginRequest = new();
 
         public AccountControllerTest()
         {
