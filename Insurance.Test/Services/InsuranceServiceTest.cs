@@ -104,8 +104,74 @@ namespace Insurance.Test.Services
         }
 
 
+        [Fact]
+        public async Task Service_PolicyHolderClaims_Should_Return_Success()
+        {
+            _sut = new InsuranceService(_mockDatabaseService.Object, _mockSerilogger.Object, _mockMapper.Object, _mockContextAccessor.Object, _mockAuditService.Object);
 
-       
+            var _imapperPolicyHolders = new PolicyHolders()
+            {
+                Id = 1,
+                NationalIDNumber = 2,
+                Name = "Sheriff",
+                Surname = "Ebelebe",
+                DateofBirth = DateTime.Now,
+                PolicyNumber = "1234567",
+                CreatedDate = DateTime.Now
+            };
+            _mockMapper.Setup(x => x.Map<PolicyHolders>(It.IsAny<PolicyHolderClaimRequest>())).Returns(_imapperPolicyHolders);
+
+            var _iMapperClaims = new Claims()
+            {
+                Id = 1,
+                NationalIDNumber = 2,
+                ClaimID = 3,
+                ExpenseAmount = 4,
+                ExpenseDate = DateTime.Now,
+                AppStage = 1,
+                ClaimStatus = "Approved",
+                NextStage = 1,
+                Expenses = "Expenses",
+                LastProcessor = "reviewer"
+            };
+            _mockMapper.Setup(x => x.Map<Claims>(It.IsAny<PolicyHolderClaimRequest>())).Returns(_iMapperClaims);
+
+            _mockDatabaseService.Setup(x => x.Add(It.IsAny<PolicyHolders>())).ReturnsAsync(1);
+
+            var user = new ClaimsPrincipal(
+                         new ClaimsIdentity(
+                             new Claim[] { new Claim("Name", "Approval") },
+                             "Basic")
+                         );
+
+            _mockContextAccessor.Setup(x => x.HttpContext.User).Returns(user);
+
+            _mockDatabaseService.Setup(x => x.Add(It.IsAny<Claims>())).ReturnsAsync(1);
+
+            var request = new PolicyHolderClaimRequest()
+            {
+                ClaimID = 1,
+                DateofBirth = DateTime.Now,
+                ExpenseDate = DateTime.Now,
+                Surname = "Ebelebe",
+                ExpenseAmount = 2000,
+                Expenses = "Transportation",
+                NationalIDNumber = 1,
+                Name = "Sheriff",
+                PolicyNumber = "1"
+            };
+
+            var result = await _sut.PolicyHolderClaims(request);
+
+            result.Should().NotBeNull();
+
+            result.ResponseCode.Should().Be("00");
+            result.StatusCode.Should().Be("200");
+            result.Should().BeOfType<WebApiResponse>();
+
+
+        }
+
 
     }
 }
