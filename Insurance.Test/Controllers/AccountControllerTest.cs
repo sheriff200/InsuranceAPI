@@ -43,7 +43,6 @@ namespace Insurance.Test.Controllers
                 Role = "Approval"
             };
 
-            var _req = _mockLoginRequest.GenerateLoginRequestObject();
             _mockAccountService.Setup(x => x.ValidateUserLogin(req)).ReturnsAsync(response);
 
             var result = await _sut.Login(req);
@@ -78,7 +77,6 @@ namespace Insurance.Test.Controllers
                 Role = "Approval"
             };
 
-            var _req = _mockLoginRequest.GenerateLoginRequestObject();
             _mockAccountService.Setup(x => x.ValidateUserLogin(req)).ReturnsAsync(response);
 
             var result = await _sut.Login(req);
@@ -97,7 +95,7 @@ namespace Insurance.Test.Controllers
 
 
         [Fact]
-        public async Task Login_Should_Return_Successful()
+        public async Task Login_Should_Return_OkResult()
         {
             var response = new WebApiResponse()
             {
@@ -112,7 +110,6 @@ namespace Insurance.Test.Controllers
                 Role = "Approval"
             };
 
-            var _req = _mockLoginRequest.GenerateLoginRequestObject();
             _mockAccountService.Setup(x => x.ValidateUserLogin(req)).ReturnsAsync(response);
 
             var result = await _sut.Login(req);
@@ -128,6 +125,101 @@ namespace Insurance.Test.Controllers
             value.Should().BeOfType<WebApiResponse>();
             value?.StatusCode.Should().Be("200");
             value?.ResponseCode.Should().Be("00");
+        }
+
+
+        [Fact]
+        public async Task RefreshToken_Should_Return_BadRequest()
+        {
+            var response = new WebApiResponse()
+            {
+                StatusCode = "400",
+            };
+
+            var req = new TokenRequest()
+            {
+                AccessToken = "AJGYERU8ERHhshudhushduhHSUDHUSHDUH",
+                RefreshToken = "XDR56789JKSsss%",
+            };
+
+            _mockAccountService.Setup(x => x.AuthenticationRefresher(req)).ReturnsAsync(response);
+
+            var result = await _sut.RefreshToken(req);
+
+            result.Should().BeOfType<ObjectResult>();
+
+            var objectResult = (ObjectResult)result;
+            objectResult.StatusCode.Should().Be(400);
+
+            var value = (WebApiResponse?)objectResult.Value;
+
+            value.Should().NotBeNull();
+            value.Should().BeOfType<WebApiResponse>();
+            value?.StatusCode.Should().Be("400");
+        }
+
+
+
+        [Fact]
+        public async Task RefreshToken_Should_Return_InternalServerError()
+        {
+            var response = new WebApiResponse()
+            {
+                StatusCode = "500",
+            };
+
+            var req = new TokenRequest()
+            {
+                AccessToken = "AJGYERU8ERHhshudhushduhHSUDHUSHDUH",
+                RefreshToken = "XDR56789JKSsss%",
+            };
+
+            _mockAccountService.Setup(x => x.AuthenticationRefresher(req)).ReturnsAsync(response);
+
+            var result = await _sut.RefreshToken(req);
+
+            result.Should().BeOfType<ObjectResult>();
+
+            var objectResult = (ObjectResult)result;
+            objectResult.StatusCode.Should().Be(500);
+
+            var value = (WebApiResponse?)objectResult.Value;
+
+            value.Should().NotBeNull();
+            value.Should().BeOfType<WebApiResponse>();
+            value?.StatusCode.Should().Be("500");
+        }
+
+
+        [Fact]
+        public async Task RefreshToken_Should_Return_OkResult()
+        {
+            var response = new WebApiResponse()
+            {
+                StatusCode = "200",
+                ResponseCode = "00",
+            };
+
+            var req = new TokenRequest()
+            {
+                AccessToken = "AJGYERU8ERHhshudhushduhHSUDHUSHDUH",
+                RefreshToken = "XDR56789JKSsss%",
+            };
+
+            _mockAccountService.Setup(x => x.AuthenticationRefresher(req)).ReturnsAsync(response);
+
+            var result = await _sut.RefreshToken(req);
+
+            result.Should().BeOfType<ObjectResult>();
+
+            var objectResult = (ObjectResult)result;
+            objectResult.StatusCode.Should().Be(200);
+
+            var value = (WebApiResponse?)objectResult.Value;
+
+            value.Should().NotBeNull();
+            value.Should().BeOfType<WebApiResponse>();
+            value?.StatusCode.Should().Be("200");
         }
 
     }
