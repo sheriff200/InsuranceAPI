@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NPoco.StoredProcedures" Version="1.0.5224.36605" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
   </ItemGroup>
 

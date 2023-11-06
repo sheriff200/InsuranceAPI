@@ -9,7 +9,7 @@ using System.Net;
 
 namespace InsuranceAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/insurance")]
     [ApiController]
     public class InsuranceController : ControllerBase

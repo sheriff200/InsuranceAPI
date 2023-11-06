@@ -19,8 +19,8 @@ namespace BusinessLogicLayer.Services
         private readonly IConfiguration _config;
         private string insuranceconnectionString = "InsuranceDbConnectionString";
         private readonly string directory = "DBLogService";
-        private readonly SeriLogger _seriLogger;
-        public DBService(IConfiguration config, SeriLogger seriLogger)
+        private readonly ISerilogger _seriLogger;
+        public DBService(IConfiguration config, ISerilogger seriLogger)
         {
             _config = config;
             _seriLogger = seriLogger;
@@ -180,6 +180,7 @@ namespace BusinessLogicLayer.Services
         }
 
 
+
         public async Task<Page<T>> GetRecords<T>(long pagenumber, long pagesize)
         {
             var result = new Page<T>();
@@ -190,7 +191,7 @@ namespace BusinessLogicLayer.Services
                     try
                     {
                         db.Connection.Open();
-                        result = await db.PageAsync<T>(pagenumber, pagesize, @"exec dbo.sp_GetAllPolicyHolderClaims");
+                        result = await db.PageAsync<T>(pagenumber, pagesize, "SELECT c.Id, c.ClaimID, c.AppStage, c.NationalIDNumber, c.ClaimStatus, c.ExpenseAmount, c.ExpenseDate, c.Expenses,PolicyHolders.DateofBirth,PolicyHolders.Name,PolicyHolders.PolicyNumber,PolicyHolders.Surname FROM Claims, PolicyHolders\r\n   inner join Claims c on c.NationalIDNumber = PolicyHolders.NationalIDNumber WHERE Claims.NationalIDNumber = PolicyHolders.NationalIDNumber");
                           return result;
                     }
                     finally

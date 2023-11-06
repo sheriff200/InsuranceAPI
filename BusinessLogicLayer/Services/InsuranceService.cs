@@ -85,7 +85,7 @@ namespace BusinessLogicLayer.Services
                 else
                 {
                     _seriLogger.LogRequest("Record found", false, directory);
-                    return new WebApiResponse { ResponseCode = ApiResponseCode.Success, StatusCode = ApiResponseCode.StatusOk, Message = "Successful", Data = response };
+                    return new WebApiResponse { ResponseCode = ApiResponseCode.Success, StatusCode = ApiResponseCode.StatusOk, Message = "Successful", Data = response.Items };
                 }
             }
             catch (Exception ex)

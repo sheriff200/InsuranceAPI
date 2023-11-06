@@ -21,12 +21,12 @@ namespace BusinessLogicLayer.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly SeriLogger _seriLogger;
+        private readonly ISerilogger _seriLogger;
         private readonly AppSettings  _appSettings;
         private readonly IDBService _dbservices;
         private readonly IAuditService _auditService;
         private readonly string directory = "AccountService";
-        public AccountService(SeriLogger seriLogger, IOptions<AppSettings> appSettings, IDBService dbservices, IAuditService auditService)
+        public AccountService(ISerilogger seriLogger, IOptions<AppSettings> appSettings, IDBService dbservices, IAuditService auditService)
         {
             _seriLogger = seriLogger;
             _appSettings = appSettings.Value;
