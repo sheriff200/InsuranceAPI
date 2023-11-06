@@ -24,7 +24,7 @@ namespace InsuranceAPI.Controllers
         public async Task<IActionResult> Login([FromBody] ValidateUserRequest model)
         {
             var response = await _accountService.ValidateUserLogin(model);
-                
+
             if (response?.StatusCode == ApiResponseCode.BadRequest)
                 return StatusCode((int)HttpStatusCode.BadRequest, response);
 
