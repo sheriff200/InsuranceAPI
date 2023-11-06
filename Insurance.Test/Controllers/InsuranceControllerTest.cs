@@ -106,6 +106,48 @@ namespace Insurance.Test.Controllers
             value?.StatusCode.Should().Be("500");
         }
 
+        [Fact]
+        public async void PolicyHolderClaims_Should_Return_Ok()
+        {
+            //Arrange
+            var request = new PolicyHolderClaimRequest()
+            {
+                ClaimID = 1,
+                DateofBirth = DateTime.Now,
+                ExpenseDate = DateTime.Now,
+                Surname = "Ebelebe",
+                ExpenseAmount = 2000,
+                Expenses = "Transportation",
+                NationalIDNumber = 1,
+                Name = "Sheriff",
+                PolicyNumber = "1"
+            };
+
+            var response = new WebApiResponse()
+            {
+                StatusCode = "200",
+
+            };
+            //Assign
+            _mockinsuranceservice.Setup(x => x.PolicyHolderClaims(request)).ReturnsAsync(response);
+            var result = await _sut.PolicyHolderClaims(request);
+
+            result.Should().BeOfType<ObjectResult>();
+
+            var objectResult = (ObjectResult)result;
+            objectResult.StatusCode.Should().Be(200);
+
+            var value = (WebApiResponse?)objectResult.Value;
+
+            value.Should().NotBeNull();
+            value.Should().BeEquivalentTo(response, x => x.ComparingByMembers<WebApiResponse>());
+            value.Should().BeOfType<WebApiResponse>();
+
+            value?.StatusCode.Should().Be("200");
+        }
+
+
+       
 
     }
 }
