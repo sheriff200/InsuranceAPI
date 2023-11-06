@@ -215,5 +215,40 @@ namespace Insurance.Test.Controllers
 
             value?.StatusCode.Should().Be("404");
         }
+
+
+        [Fact]
+        public async void ProcessClaims_Should_Return_InternalServerError()
+        {
+            //Arrange
+            var request = new ProcessClaimRequest()
+            {
+                Id = 1,
+                ProcessTypeId = 1
+
+            };
+
+            var response = new WebApiResponse()
+            {
+                StatusCode = "500",
+
+            };
+            //Assign
+            _mockinsuranceservice.Setup(x => x.ProcessClaims(request)).ReturnsAsync(response);
+            var result = await _sut.ProcessClaims(request);
+
+            result.Should().BeOfType<ObjectResult>();
+
+            var objectResult = (ObjectResult)result;
+            objectResult.StatusCode.Should().Be(500);
+
+            var value = (WebApiResponse?)objectResult.Value;
+
+            value.Should().NotBeNull();
+            value.Should().BeEquivalentTo(response, x => x.ComparingByMembers<WebApiResponse>());
+            value.Should().BeOfType<WebApiResponse>();
+
+            value?.StatusCode.Should().Be("500");
+        }
     }
 }
