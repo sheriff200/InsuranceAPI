@@ -18,12 +18,12 @@ namespace BusinessLogicLayer.Services
     public class InsuranceService : IInsuranceService
     {
         private readonly IDBService _dbservices;
-        private readonly SeriLogger _seriLogger;
+        private readonly ISerilogger _seriLogger;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAuditService _auditService;
         private readonly string directory = "InsuranceServices";
-        public InsuranceService(IDBService dbservices, SeriLogger seriLogger, IMapper mapper, 
+        public InsuranceService(IDBService dbservices, ISerilogger seriLogger, IMapper mapper, 
             IHttpContextAccessor httpContextAccessor, IAuditService auditService)
         {
 

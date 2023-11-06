@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using InfrastructureLayer.IServices;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Serilog;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Serilog
 {
-    public class SeriLogger 
+    public class SeriLogger : ISerilogger
     {
         public IConfiguration Configuration { get; }
         private readonly AppSettings _appSettings;

@@ -25,7 +25,7 @@ builder.Services.AddScoped<IDBService, DBService>();
 builder.Services.AddScoped<IInsuranceService, InsuranceService>();
 builder.Services.AddScoped<IAuditService, AuditService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<SeriLogger>();
+builder.Services.AddScoped<ISerilogger, SeriLogger>();
 var appSettingsSection = configuration.GetSection("AppSettings");
 builder.Services.Configure<AppSettings>(appSettingsSection);
 var appSettings = appSettingsSection.Get<AppSettings>();
