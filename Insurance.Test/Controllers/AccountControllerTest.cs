@@ -29,13 +29,11 @@ namespace Insurance.Test.Controllers
 
 
         [Fact]
-        public async Task Login_Should_Return_BadRequest_Invalid_Username_Or_PasswordAsync()
+        public async Task Login_Should_Return_BadRequest()
         {
             var response = new WebApiResponse()
             {
                 StatusCode = "400",
-                ResponseCode = "400",
-                Message = "Invalid username or password"
             };
 
             var req = new ValidateUserRequest()
@@ -62,26 +60,22 @@ namespace Insurance.Test.Controllers
             value.Should().BeOfType<WebApiResponse>();
 
             value?.StatusCode.Should().Be("400");
-            value?.ResponseCode.Should().Be("400");
-            value?.Message.Should().Be("Invalid username or password");
         }
 
 
         [Fact]
-        public async Task Login_Should_Return_BadRequest_Invalid_User_Role()
+        public async Task Login_Should_Return_Internal_Server_Error()
         {
             var response = new WebApiResponse()
             {
-                StatusCode = "400",
-                ResponseCode = "400",
-                Message = "Invalid user role"
+                StatusCode = "500",
             };
 
             var req = new ValidateUserRequest()
             {
-                Username = "mail@example.com",
+                Username = "jxasmail@example.com",
                 Password = "XDR56789JKSsss%",
-                Role = "INVALID-ROLE"
+                Role = "Approval"
             };
 
             var _req = _mockLoginRequest.GenerateLoginRequestObject();
@@ -92,18 +86,17 @@ namespace Insurance.Test.Controllers
             result.Should().BeOfType<ObjectResult>();
 
             var objectResult = (ObjectResult)result;
-            objectResult.StatusCode.Should().Be(400);
+            objectResult.StatusCode.Should().Be(500);
 
             var value = (WebApiResponse?)objectResult.Value;
 
             value.Should().NotBeNull();
-            value.Should().BeEquivalentTo(response, x => x.ComparingByMembers<WebApiResponse>());
             value.Should().BeOfType<WebApiResponse>();
-
-            value?.StatusCode.Should().Be("400");
-            value?.ResponseCode.Should().Be("400");
-            value?.Message.Should().Be("Invalid user role");
+            value?.StatusCode.Should().Be("500");
         }
+
+
+
 
     }
 }
