@@ -288,7 +288,7 @@ namespace Insurance.Test.Controllers
 
 
         [Fact]
-        public async void ProcessClaims_Should_Return_RecordNotFound()
+        public async void AllPolicyHolderClaims_Should_Return_RecordNotFound()
         {
             //Arrange
             var request = new AllPolicyHolderClaimRequest()
